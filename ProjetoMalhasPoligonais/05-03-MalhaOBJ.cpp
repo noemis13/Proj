@@ -14,8 +14,7 @@ int x_ini,y_ini,bot;
 OBJ *objeto;
 
 // Função responsável pela especificação dos parâmetros de iluminação
-void DefineIluminacao (void)
-{
+void DefineIluminacao (void){
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
 	GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0};	   	// "cor"
 	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
@@ -42,8 +41,7 @@ void DefineIluminacao (void)
 }
 
 // Função callback de redesenho da janela de visualização
-void Desenha(void)
-{
+void Desenha(void){
 	// Limpa a janela de visualização com a cor
 	// de fundo definida previamente
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,8 +72,7 @@ void PosicionaObservador(void){
 }
 
 // Função usada para especificar o volume de visualização
-void EspecificaParametrosVisualizacao(void)
-{
+void EspecificaParametrosVisualizacao(void){
 
 	// Especifica sistema de coordenadas de projeção
 	glMatrixMode(GL_PROJECTION);
@@ -92,8 +89,7 @@ void EspecificaParametrosVisualizacao(void)
 }
 
 // Função callback chamada quando o tamanho da janela é alterado
-void AlteraTamanhoJanela(GLsizei w, GLsizei h)
-{
+void AlteraTamanhoJanela(GLsizei w, GLsizei h){
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
 
@@ -107,43 +103,17 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 }
 
 // Função callback chamada para gerenciar eventos de teclas normais (ESC)
-void Teclas (unsigned char tecla, int x, int y)
-{
-	if(tecla==27) // ESC ?
-	{
-		// Libera memória e finaliza programa
-		LiberaObjeto(objeto);
-		exit(0);
-	}
-	if(tecla=='m')
-	{
-		if(glIsEnabled(GL_LIGHTING))
-			glDisable(GL_LIGHTING);
-		else
-            glEnable(GL_LIGHTING);
-	}
-	glutPostRedisplay();
+void Teclas (unsigned char tecla, int x, int y){
+
 }
 
 // Função callback para tratar eventos de teclas especiais
-void TeclasEspeciais (int tecla, int x, int y)
-{
-	switch (tecla)
-	{
-		case GLUT_KEY_HOME:	if(angle>=10)  angle -=5;
-							break;
-		case GLUT_KEY_END:	if(angle<=150) angle +=5;
-							break;
-	}
-	EspecificaParametrosVisualizacao();
-	glutPostRedisplay();
+void TeclasEspeciais (int tecla, int x, int y){
 }
 
 // Função callback para eventos de botões do mouse
-void GerenciaMouse(int button, int state, int x, int y)
-{
-	if(state==GLUT_DOWN)
-	{
+void GerenciaMouse(int button, int state, int x, int y){
+	if(state==GLUT_DOWN){
 		// Salva os parâmetros atuais
 		x_ini = x;
 		y_ini = y;
@@ -161,11 +131,10 @@ void GerenciaMouse(int button, int state, int x, int y)
 #define SENS_ROT	5.0
 #define SENS_OBS	15.0
 #define SENS_TRANSL	20.0
-void GerenciaMovim(int x, int y)
-{
+void GerenciaMovim(int x, int y){
 	// Botão esquerdo
-	if(bot==GLUT_LEFT_BUTTON)
-	{
+	if(bot==GLUT_LEFT_BUTTON){
+
 		// Calcula diferenças
 		int deltax = x_ini - x;
 		int deltay = y_ini - y;
@@ -181,8 +150,7 @@ void GerenciaMovim(int x, int y)
 		obsZ = obsZ_ini + deltaz/SENS_OBS;
 	}
 	// Botão do meio
-	else if(bot==GLUT_MIDDLE_BUTTON)
-	{
+	else if(bot==GLUT_MIDDLE_BUTTON){
 		// Calcula diferenças
 		int deltax = x_ini - x;
 		int deltay = y_ini - y;
@@ -195,8 +163,8 @@ void GerenciaMovim(int x, int y)
 }
 
 // Função responsável por inicializar parâmetros e variáveis
-void Inicializa (void)
-{
+void Inicializa (void){
+
 	char nomeArquivo[30];
 
 	// Define a cor de fundo da janela de visualização como branca
@@ -232,8 +200,8 @@ void Inicializa (void)
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
-	if(objeto->normais)
-	{
+	if(objeto->normais){
+
 		// Se já existirem normais no arquivo, apaga elas
 		free(objeto->normais);
 		objeto->normais_por_vertice = false;
@@ -242,8 +210,7 @@ void Inicializa (void)
 }
 
 // Programa Principal
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     glutInit(&argc, argv);
 	// Define do modo de operação da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
