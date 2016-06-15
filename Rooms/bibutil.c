@@ -938,3 +938,4 @@ void CriaDisplayList(OBJ *ptr)
 	}
 	else if(ptr->dlist != -2)_criaDList(ptr);
 }
+

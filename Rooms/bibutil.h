@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glut.h>
-
+#include <stdbool.h>
 
 /*
 extern "C" {
@@ -88,12 +88,12 @@ typedef struct {
 
 // Protótipos das funções
 // Funções para cálculos diversos
-void Normaliza(VERT &norm);
-void ProdutoVetorial (VERT &v1, VERT &v2, VERT &vresult);
-void VetorNormal(VERT vert1, VERT vert2, VERT vert3, VERT &n);
-void RotaZ(VERT &in, VERT &out, float ang);
-void RotaY(VERT &in, VERT &out, float ang);
-void RotaX(VERT &in, VERT &out, float ang);
+void Normaliza(VERT *norm);
+void ProdutoVetorial(VERT *v1, VERT *v2, VERT *vresult);
+void VetorNormal(VERT vert1, VERT vert2, VERT vert3, VERT *n);
+void RotaZ(VERT *in, VERT *out, float ang);
+void RotaY(VERT *in, VERT *out, float ang);
+void RotaX(VERT *in, VERT *out, float ang);
 
 // Funções para carga e desenho de objetos
 OBJ *CarregaObjeto(char *nomeArquivo, bool mipmap);
@@ -137,3 +137,4 @@ TEX *CarregaJPG(const char *filename, bool inverte=true);
 #endif
 
 #endif
+
