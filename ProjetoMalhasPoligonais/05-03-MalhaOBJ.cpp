@@ -11,13 +11,21 @@ GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 
 // Apontador para objeto
-OBJ *objeto;
-
+OBJ *objetoWall;
+OBJ *objetoTree;
+OBJ *objetoFloor;
+OBJ *objetoFountain;
 // Função responsável pela especificação dos parâmetros de iluminação
-void DefineIluminacao (void)
-{
+void DefineIluminacao (void){
+
+
+}
+
+// Função callback de redesenho da janela de visualização
+void Desenha(void){
+    /*==========OBJeTO WALL===========*/
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0};	   	// "cor"
+	GLfloat luzDifusa[4]={0.8, 0.1, 0.4,1.0};	   	// "cor"
 	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
 	GLfloat posicaoLuz[4]={0.0, 10.0, 100.0, 1.0};
 
@@ -39,29 +47,27 @@ void DefineIluminacao (void)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
-}
 
-// Função callback de redesenho da janela de visualização
-void Desenha(void)
-{
 	// Limpa a janela de visualização com a cor
 	// de fundo definida previamente
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 
 	// Altera a cor do desenho para rosa
-	glColor3f(1.0f, 0.0f, 1.0f);
+	glColor3f(0.55f, 0.45f, 0.34f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
 
-	DesenhaObjeto(objeto);
+	DesenhaObjeto(objetoWall);
     glPopMatrix();
+
 
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
+	glFlush();
 }
 
 // Função usada para especificar a posição do observador virtual
@@ -74,8 +80,7 @@ void PosicionaObservador(void){
 }
 
 // Função usada para especificar o volume de visualização
-void EspecificaParametrosVisualizacao(void)
-{
+void EspecificaParametrosVisualizacao(void){
 
 	// Especifica sistema de coordenadas de projeção
 	glMatrixMode(GL_PROJECTION);
@@ -87,13 +92,13 @@ void EspecificaParametrosVisualizacao(void)
 
 	// Chama as funções que especificam os parâmetros da câmera e os parâmetros de iluminação
 	PosicionaObservador();
-	DefineIluminacao();
+	//DefineIluminacao();
+	Desenha();
 
 }
 
 // Função callback chamada quando o tamanho da janela é alterado
-void AlteraTamanhoJanela(GLsizei w, GLsizei h)
-{
+void AlteraTamanhoJanela(GLsizei w, GLsizei h){
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
 
@@ -107,16 +112,14 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 }
 
 // Função callback chamada para gerenciar eventos de teclas normais (ESC)
-void Teclas (unsigned char tecla, int x, int y)
-{
-	if(tecla==27) // ESC ?
-	{
+void Teclas (unsigned char tecla, int x, int y){
+
+	if(tecla==27) {// ESC ?
 		// Libera memória e finaliza programa
-		LiberaObjeto(objeto);
+		LiberaObjeto(objetoWall);
 		exit(0);
 	}
-	if(tecla=='m')
-	{
+	if(tecla=='m'){
 		if(glIsEnabled(GL_LIGHTING))
 			glDisable(GL_LIGHTING);
 		else
@@ -126,8 +129,7 @@ void Teclas (unsigned char tecla, int x, int y)
 }
 
 // Função callback para tratar eventos de teclas especiais
-void TeclasEspeciais (int tecla, int x, int y)
-{
+void TeclasEspeciais (int tecla, int x, int y){
 	switch (tecla)
 	{
 		case GLUT_KEY_HOME:	if(angle>=10)  angle -=5;
@@ -140,10 +142,9 @@ void TeclasEspeciais (int tecla, int x, int y)
 }
 
 // Função callback para eventos de botões do mouse
-void GerenciaMouse(int button, int state, int x, int y)
-{
-	if(state==GLUT_DOWN)
-	{
+void GerenciaMouse(int button, int state, int x, int y){
+
+	if(state==GLUT_DOWN){
 		// Salva os parâmetros atuais
 		x_ini = x;
 		y_ini = y;
@@ -161,11 +162,9 @@ void GerenciaMouse(int button, int state, int x, int y)
 #define SENS_ROT	5.0
 #define SENS_OBS	15.0
 #define SENS_TRANSL	20.0
-void GerenciaMovim(int x, int y)
-{
+void GerenciaMovim(int x, int y){
 	// Botão esquerdo
-	if(bot==GLUT_LEFT_BUTTON)
-	{
+	if(bot==GLUT_LEFT_BUTTON){
 		// Calcula diferenças
 		int deltax = x_ini - x;
 		int deltay = y_ini - y;
@@ -181,8 +180,7 @@ void GerenciaMovim(int x, int y)
 		obsZ = obsZ_ini + deltaz/SENS_OBS;
 	}
 	// Botão do meio
-	else if(bot==GLUT_MIDDLE_BUTTON)
-	{
+	else if(bot==GLUT_MIDDLE_BUTTON){
 		// Calcula diferenças
 		int deltax = x_ini - x;
 		int deltay = y_ini - y;
@@ -194,9 +192,9 @@ void GerenciaMovim(int x, int y)
 	glutPostRedisplay();
 }
 
+
 // Função responsável por inicializar parâmetros e variáveis
-void Inicializa (void)
-{
+void Inicializa (void){
 	char nomeArquivo[30];
 
 	// Define a cor de fundo da janela de visualização como branca
@@ -228,26 +226,25 @@ void Inicializa (void)
 	//gets(nomeArquivo);
 
 	// Carrega o objeto 3D
-	//objeto = CarregaObjeto("table_sit_concrete.obj",true);
-    //objeto = CarregaObjeto("fountain.obj",true);
-    //objeto = CarregaObjeto("grass.obj",true);
-    objeto = CarregaObjeto("tree.obj",true);
+	objetoWall = CarregaObjeto("wall.obj",true);
+    //objetoFountain = CarregaObjeto("fountain.obj",true);
+    //objetoTree = CarregaObjeto("tree.obj",true);
+    //objetoFloor
 
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
-	if(objeto->normais)
+	if(objetoWall->normais)
 	{
 		// Se já existirem normais no arquivo, apaga elas
-		free(objeto->normais);
-		objeto->normais_por_vertice = false;
+		free(objetoWall->normais);
+		objetoWall->normais_por_vertice = false;
 	}
-	CalculaNormaisPorFace(objeto);
+	CalculaNormaisPorFace(objetoWall);
 }
 
 // Programa Principal
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     glutInit(&argc, argv);
 	// Define do modo de operação da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
