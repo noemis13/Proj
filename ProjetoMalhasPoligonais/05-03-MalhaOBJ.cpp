@@ -15,11 +15,6 @@ OBJ *objetoWall;
 OBJ *objetoTree;
 OBJ *objetoFloor;
 OBJ *objetoFountain;
-// Função responsável pela especificação dos parâmetros de iluminação
-void DefineIluminacao (void){
-
-
-}
 
 // Função callback de redesenho da janela de visualização
 void Desenha(void){
@@ -32,7 +27,6 @@ void Desenha(void){
 	// Capacidade de brilho do material
 	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
 	GLint especMaterial = 60;
-
 
 	// Define a refletância do material
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
@@ -64,7 +58,48 @@ void Desenha(void){
 	DesenhaObjeto(objetoWall);
     glPopMatrix();
 
+    /*==========OBJeTO TREE===========*/
 
+	GLfloat luzAmbienteTree[4]={0.2,0.2,0.2,1.0};
+	GLfloat luzDifusaTree[4]={0.8, 0.1, 0.4,1.0};	   	// "cor"
+	GLfloat luzEspecularTree[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
+	GLfloat posicaoLuzTree[4]={0.0, 10.0, 100.0, 1.0};
+
+	// Capacidade de brilho do material
+	GLfloat especularidadeTree[4]={1.0,1.0,1.0,1.0};
+	GLint especMaterialTree = 30;
+
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeTree);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterialTree);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteTree);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbienteTree);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusaTree);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularTree);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzTree);
+
+	// Limpa a janela de visualização com a cor
+	// de fundo definida previamente
+
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glMatrixMode(GL_MODELVIEW);
+
+	glColor3f(0.55f, 0.45f, 0.34f);
+
+	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	glPushMatrix();
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+
+	DesenhaObjeto(objetoTree);
+    glPopMatrix();
+
+	/*================================*/
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
 	glFlush();
@@ -195,10 +230,9 @@ void GerenciaMovim(int x, int y){
 
 // Função responsável por inicializar parâmetros e variáveis
 void Inicializa (void){
-	char nomeArquivo[30];
 
 	// Define a cor de fundo da janela de visualização como branca
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.53f, 0.81f, 0.93f, 1.0f);
 
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
@@ -221,26 +255,34 @@ void Inicializa (void){
 	obsX = obsY = 0;
 	obsZ = 100;
 
-	// Lê o nome do arquivo e chama a rotina de leitura
-	//printf("Digite o nome do arquivo que contem o modelo 3D: ");
-	//gets(nomeArquivo);
 
 	// Carrega o objeto 3D
 	objetoWall = CarregaObjeto("wall.obj",true);
     //objetoFountain = CarregaObjeto("fountain.obj",true);
-    //objetoTree = CarregaObjeto("tree.obj",true);
+    objetoTree = CarregaObjeto("tree.obj",true);
     //objetoFloor
 
     printf("Objeto carregado!");
 
+    //=================WALL===============
 	// E calcula o vetor normal em cada face
-	if(objetoWall->normais)
-	{
+	if(objetoWall->normais){
 		// Se já existirem normais no arquivo, apaga elas
 		free(objetoWall->normais);
 		objetoWall->normais_por_vertice = false;
 	}
+
 	CalculaNormaisPorFace(objetoWall);
+
+	//=================TREE===============
+
+	if(objetoTree->normais){
+		// Se já existirem normais no arquivo, apaga elas
+		free(objetoTree->normais);
+		objetoTree->normais_por_vertice = false;
+	}
+
+	CalculaNormaisPorFace(objetoTree);
 }
 
 // Programa Principal
