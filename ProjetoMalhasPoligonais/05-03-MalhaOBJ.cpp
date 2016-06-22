@@ -10,6 +10,8 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 
+float alpha=0, beta=0, delta=1;
+
 // Apontador para objeto
 OBJ *objetoWall;
 OBJ *objetoTree;
@@ -18,6 +20,12 @@ OBJ *objetoFountain;
 
 // Função callback de redesenho da janela de visualização
 void Desenha(void){
+    // Limpa a janela de visualização com a cor
+	// de fundo definida previamente
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+
+
     /*==========OBJeTO WALL===========*/
 	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
 	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
@@ -42,10 +50,6 @@ void Desenha(void){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
 
-	// Limpa a janela de visualização com a cor
-	// de fundo definida previamente
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
 
 	// Altera a cor do desenho para rosa
 	glColor3f(0.55f, 0.45f, 0.34f);
@@ -59,15 +63,15 @@ void Desenha(void){
     glPopMatrix();
 
     /*==========OBJeTO TREE===========*/
-/*
+
 	GLfloat luzAmbienteTree[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusaTree[4]={0.8, 0.1, 0.4,1.0};	   	// "cor"
-	GLfloat luzEspecularTree[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
-	GLfloat posicaoLuzTree[4]={0.0, 10.0, 100.0, 1.0};
+	GLfloat luzDifusaTree[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecularTree[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
+	GLfloat posicaoLuzTree[4]={50.0, 25.0, 100.0, 1.0};
 
 	// Capacidade de brilho do material
-	GLfloat especularidadeTree[4]={1.0,1.0,1.0,1.0};
-	GLint especMaterialTree = 30;
+	GLfloat especularidadeTree[4]={2.0,3.0,3.0,1.0};
+	GLint especMaterialTree = 90;
 
 	// Define a refletância do material
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeTree);
@@ -83,25 +87,26 @@ void Desenha(void){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularTree);
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzTree);
 
-	// Limpa a janela de visualização com a cor
-	// de fundo definida previamente
 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glMatrixMode(GL_MODELVIEW);
-
-	glColor3f(0.55f, 0.45f, 0.34f);
+	glColor3f(0.60f, 0.80f, 0.19f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
+
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-
+    glTranslated(-100, -100, -400);
+    glScalef(130, 200, 130);
 	DesenhaObjeto(objetoTree);
+
     glPopMatrix();
-*/
+
 	/*================================*/
+
+
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
+
 	glFlush();
 }
 
@@ -153,6 +158,8 @@ void Teclas (unsigned char tecla, int x, int y){
 	if(tecla==27) {// ESC ?
 		// Libera memória e finaliza programa
 		LiberaObjeto(objetoWall);
+		LiberaObjeto(objetoTree);
+		LiberaObjeto(objetoFountain);
 		exit(0);
 	}
 	if(tecla=='m'){
