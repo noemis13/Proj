@@ -101,6 +101,46 @@ void Desenha(void){
 
     glPopMatrix();
 
+
+    /*==========OBJeTO FOUNTAIN===========*/
+
+	GLfloat luzAmbienteFountain[4]={0.2,0.2,0.2,1.0};
+	GLfloat luzDifusaFountain[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecularFountain[4]={10.0, 8.0, 10.0, 1.0};	// "brilho"
+	GLfloat posicaoLuzFountain[4]={50.0, 50.0, 200.0, 1.0};
+
+	// Capacidade de brilho do material
+	GLfloat especularidadeFountain[4]={2.0,3.0,3.0,1.0};
+	GLint especMaterialFountain = 90;
+
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeFountain);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterialFountain);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteFountain);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbienteFountain);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusaFountain);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularFountain);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzFountain);
+
+
+	glColor3f(0.82f, 0.82f, 0.82f);
+
+	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	glPushMatrix();
+
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+    glTranslated(-5, -120, 150);
+    glScalef(2.0f, 2.0f, 2.0f);
+	DesenhaObjeto(objetoFountain);
+
+    glPopMatrix();
+
 	/*================================*/
 
 
@@ -266,8 +306,8 @@ void Inicializa (void){
 
 	// Carrega o objeto 3D
 	objetoWall = CarregaObjeto("wall.obj",true);
-    //objetoFountain = CarregaObjeto("fountain.obj",true);
     objetoTree = CarregaObjeto("tree.obj",true);
+    objetoFountain = CarregaObjeto("fountain.obj",true);
     //objetoFloor
 
     printf("Objeto carregado!");
@@ -291,6 +331,17 @@ void Inicializa (void){
 	}
 
 	CalculaNormaisPorFace(objetoTree);
+
+	//==============FOUNTAIN===============
+
+	if(objetoFountain->normais){
+		// Se já existirem normais no arquivo, apaga elas
+		free(objetoFountain->normais);
+		objetoFountain->normais_por_vertice = false;
+	}
+
+	CalculaNormaisPorFace(objetoFountain);
+
 }
 
 // Programa Principal
@@ -300,13 +351,13 @@ int main(int argc, char *argv[]){
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	// Especifica a posição inicial da janela GLUT
-	glutInitWindowPosition(5,5);
+	glutInitWindowPosition(50,50);
 
 	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(450,450);
 
 	// Cria a janela passando como argumento o título da mesma
-	glutCreateWindow("Desenho de um objeto 3D com cálculo do vetor normal");
+	glutCreateWindow("Parque");
 
 	// Registra a função callback de redesenho da janela de visualização
 	glutDisplayFunc(Desenha);
