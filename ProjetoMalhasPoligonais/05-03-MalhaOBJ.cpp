@@ -58,6 +58,7 @@ void Desenha(void){
 	glPushMatrix();
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
+    glTranslatef(0, -21, 0);
 
 	DesenhaObjeto(objetoWall);
     glPopMatrix();
@@ -95,7 +96,7 @@ void Desenha(void){
 
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-    glTranslated(-100, -100, -400);
+    glTranslated(-100, -94, -400);
     glScalef(130, 200, 130);
 	DesenhaObjeto(objetoTree);
 
@@ -135,13 +136,55 @@ void Desenha(void){
 
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-    glTranslated(-5, -120, 150);
+    glTranslated(-5, -149, 150);
     glScalef(2.0f, 2.0f, 2.0f);
 	DesenhaObjeto(objetoFountain);
 
     glPopMatrix();
 
-	/*================================*/
+	/*==========OBJeTO GRASS===========*/
+	/*GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
+	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecular[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
+	GLfloat posicaoLuz[4]={50.0, 25.0, 100.0, 1.0};
+
+	// Capacidade de brilho do material
+	GLfloat especularidade[4]={2.0,3.0,3.0,1.0};
+	GLint especMaterial = 90;
+
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+
+*/
+	// Altera a cor do desenho para rosa
+	glColor3f(0.55f, 0.45f, 0.34f);
+
+	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	glPushMatrix();
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+
+    glTranslatef(0, -150, 0);
+    glScalef(50, 0, -10);
+    glColor3f(0, 0.39f, 0);
+	glutSolidCube(100);
+	glPopMatrix();
+
+
+    /*======================================*/
+
+	glPopMatrix();
 
 
 	// Executa os comandos OpenGL
