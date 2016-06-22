@@ -19,14 +19,14 @@ OBJ *objetoFountain;
 // Função callback de redesenho da janela de visualização
 void Desenha(void){
     /*==========OBJeTO WALL===========*/
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusa[4]={0.8, 0.1, 0.4,1.0};	   	// "cor"
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
-	GLfloat posicaoLuz[4]={0.0, 10.0, 100.0, 1.0};
+	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
+	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecular[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
+	GLfloat posicaoLuz[4]={50.0, 25.0, 100.0, 1.0};
 
 	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
-	GLint especMaterial = 60;
+	GLfloat especularidade[4]={2.0,3.0,3.0,1.0};
+	GLint especMaterial = 90;
 
 	// Define a refletância do material
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
@@ -59,7 +59,7 @@ void Desenha(void){
     glPopMatrix();
 
     /*==========OBJeTO TREE===========*/
-
+/*
 	GLfloat luzAmbienteTree[4]={0.2,0.2,0.2,1.0};
 	GLfloat luzDifusaTree[4]={0.8, 0.1, 0.4,1.0};	   	// "cor"
 	GLfloat luzEspecularTree[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
@@ -98,7 +98,7 @@ void Desenha(void){
 
 	DesenhaObjeto(objetoTree);
     glPopMatrix();
-
+*/
 	/*================================*/
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
@@ -110,7 +110,7 @@ void PosicionaObservador(void){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();//carrega a matriz de identidade
     gluLookAt(obsX,obsY,obsZ,//posição da câmera
-              0.0,0.0,0.0,//para onde a câmera aponta
+              0.0,1.0,0.0,//para onde a câmera aponta
               0.0,1.0,0.0);//vetor view-up//
 }
 
@@ -123,10 +123,11 @@ void EspecificaParametrosVisualizacao(void){
 	glLoadIdentity();
 
 	// Especifica a projeção perspectiva(angulo,aspecto,dnear,dfar)
-	gluPerspective(angle,fAspect,0.01,1200);
+	gluPerspective(angle,fAspect, 0.01, 1200);
 
 	// Chama as funções que especificam os parâmetros da câmera e os parâmetros de iluminação
 	PosicionaObservador();
+
 	//DefineIluminacao();
 	Desenha();
 
@@ -248,12 +249,12 @@ void Inicializa (void){
 
 	// Inicializa a variável que especifica o ângulo da projeção
 	// perspectiva
-	angle=55;
+	angle=75;
 
 	// Inicializa as variáveis usadas para alterar a posição do
 	// observador virtual
-	obsX = obsY = 0;
-	obsZ = 100;
+	obsX = obsY = 100;
+	obsZ = 350;
 
 
 	// Carrega o objeto 3D
