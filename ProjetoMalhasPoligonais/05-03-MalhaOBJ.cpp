@@ -96,6 +96,11 @@ void Desenha(void){
 	glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuzTree); //posição da fonte de luz
 
 
+    //ativar atenuação
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.5f);
+
 	glColor3f(0.33f, 0.42f, 0.19f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
@@ -141,6 +146,8 @@ void Desenha(void){
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
 
+
+
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
     glTranslated(-5, -149, 150);
@@ -150,19 +157,10 @@ void Desenha(void){
     glPopMatrix();
 
 	/*==========OBJeTO GRASS===========*/
-	/*GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
+/*	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
 	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
 	GLfloat luzEspecular[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
 	GLfloat posicaoLuz[4]={50.0, 25.0, 100.0, 1.0};
-
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={2.0,3.0,3.0,1.0};
-	GLint especMaterial = 90;
-
-	// Define a refletância do material
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
 
 	// Ativa o uso da luz ambiente
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
@@ -173,12 +171,17 @@ void Desenha(void){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
 
-*/
-    // Altera a cor do desenho para rosa
+
+  */  // Altera a cor do desenho para rosa
 	//glColor3f(0.55f, 0.45f, 0.34f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
+
+    //ativar atenuação
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.5f);
 
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
@@ -193,10 +196,10 @@ void Desenha(void){
 
     /*==========OBJeTO Airplane===========*/
 
-	GLfloat luzAmbienteAirplane[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusaAirplane[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
-	GLfloat luzEspecularAirplane[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
-	GLfloat posicaoLuzAirplane[4]={50.0, 25.0, 100.0, 1.0};
+	GLfloat luzAmbienteAirplane[4]={0.1,0.1,0.1,1.0};
+	GLfloat luzDifusaAirplane[4]={0.1,0.1,0.1,1.0};	   	// "cor"
+	GLfloat luzEspecularAirplane[4]={1.0f, 0.5f, 0.5f, 1.0};	// "brilho"
+	GLfloat posicaoLuzAirplane[4]={transPlane, 10, -70, 1.0};
 
 	// Capacidade de brilho do material
 	GLfloat especularidadeAirplane[4]={2.0,3.0,3.0,1.0};
@@ -216,6 +219,11 @@ void Desenha(void){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularAirplane);
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzAirplane);
 
+    //ativar atenuação
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.8f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.8f);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.8f);
+
 
 	glColor3f(1, 0.55f, 0);
 
@@ -226,7 +234,7 @@ void Desenha(void){
 	glRotatef(rotY,0,1,0);
 
     glScalef(10, 10, 10);
-    glTranslated(transPlane, 10, -50);
+    glTranslated(transPlane, 10, -70);
     glRotatef(600, 0, 1, 0);
     glRotatef(-30, 0, 0, 1);
 
