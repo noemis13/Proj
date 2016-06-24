@@ -10,13 +10,25 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 
-float alpha=0, beta=0, delta=1;
 
 // Apontador para objeto
 OBJ *objetoWall;
 OBJ *objetoTree;
-OBJ *objetoFloor;
 OBJ *objetoFountain;
+OBJ *objetoAirplane;
+
+/*//Função para abrir a imagem da grama
+imagem *LoadBMP(char *nomeImagem){
+    FILE *arquivo = NULL;
+
+    arquivo = fopen(nomeImagem, "r");
+
+    if(arquivo){
+        fclose(arquivo);
+        return (arquivo);
+    }
+}
+*/
 
 // Função callback de redesenho da janela de visualização
 void Desenha(void){
@@ -167,27 +179,69 @@ void Desenha(void){
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
 
 */
-	// Altera a cor do desenho para rosa
-	glColor3f(0.55f, 0.45f, 0.34f);
+    // Altera a cor do desenho para rosa
+	//glColor3f(0.55f, 0.45f, 0.34f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
+
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+    glTranslatef(0, -150, 0);
+    glScalef(100, 0, -50);
+    glColor3f(0, 0.39f, 0);
+
+	//glTexCoord2f(1.0, 1.0);
+	glutSolidCube(100);
+
+    glPopMatrix();
+
+    /*==========OBJeTO Airplane===========*/
+
+	GLfloat luzAmbienteAirplane[4]={0.2,0.2,0.2,1.0};
+	GLfloat luzDifusaAirplane[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecularAirplane[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
+	GLfloat posicaoLuzAirplane[4]={50.0, 25.0, 100.0, 1.0};
+
+	// Capacidade de brilho do material
+	GLfloat especularidadeAirplane[4]={2.0,3.0,3.0,1.0};
+	GLint especMaterialAirplane = 90;
+
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeAirplane);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterialAirplane);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteAirplane);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbienteAirplane);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusaAirplane);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularAirplane);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzAirplane);
+
+
+	glColor3f(1, 0.55f, 0);
+
+	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	glPushMatrix();
+
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
 
-    glTranslatef(0, -150, 0);
-    glScalef(50, 0, -10);
-    glColor3f(0, 0.39f, 0);
-	glutSolidCube(100);
-	glPopMatrix();
+    glScalef(10, 10, 10);
+    glTranslated(50, 10, -50);
+    glRotatef(600, 0, 1, 0);
+    glRotatef(-30, 0, 0, 1);
 
+    DesenhaObjeto(objetoAirplane);
 
-    /*======================================*/
+    glPopMatrix();
 
-	glPopMatrix();
+    /*==================================*/
 
-
-	// Executa os comandos OpenGL
+    // Executa os comandos OpenGL
 	glutSwapBuffers();
 
 	glFlush();
@@ -243,6 +297,7 @@ void Teclas (unsigned char tecla, int x, int y){
 		LiberaObjeto(objetoWall);
 		LiberaObjeto(objetoTree);
 		LiberaObjeto(objetoFountain);
+		LiberaObjeto(objetoAirplane);
 		exit(0);
 	}
 	if(tecla=='m'){
@@ -319,6 +374,7 @@ void GerenciaMovim(int x, int y){
 }
 
 
+
 // Função responsável por inicializar parâmetros e variáveis
 void Inicializa (void){
 
@@ -346,12 +402,30 @@ void Inicializa (void){
 	obsX = obsY = 100;
 	obsZ = 350;
 
+	//textura para o chão
+	//textura da grama
+    GLuint idTextura;
+	glGenTextures(1, &idTextura);
+	glBindTexture(GL_TEXTURE_2D, idTextura);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+
+    FILE *file = fopen("texto-grama-1.jpg", "r");
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 660, 400, 0, GL_RGB, GL_UNSIGNED_BYTE, file);
+
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 13);
 
 	// Carrega o objeto 3D
 	objetoWall = CarregaObjeto("wall.obj",true);
     objetoTree = CarregaObjeto("tree.obj",true);
     objetoFountain = CarregaObjeto("fountain.obj",true);
-    //objetoFloor
+    objetoAirplane = CarregaObjeto("airplane.obj", true);
 
     printf("Objeto carregado!");
 
@@ -384,6 +458,16 @@ void Inicializa (void){
 	}
 
 	CalculaNormaisPorFace(objetoFountain);
+
+    //==============AIRPLANE===============
+
+	if(objetoAirplane->normais){
+		// Se já existirem normais no arquivo, apaga elas
+		free(objetoAirplane->normais);
+		objetoAirplane->normais_por_vertice = false;
+	}
+
+	CalculaNormaisPorFace(objetoAirplane);
 
 }
 
