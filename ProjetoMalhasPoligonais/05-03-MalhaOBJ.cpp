@@ -41,28 +41,23 @@ void Desenha(void){
 
     /*==========OBJeTO WALL===========*/
 	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
-	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
-	GLfloat luzEspecular[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
-	GLfloat posicaoLuz[4]={50.0, 25.0, 100.0, 1.0};
+	GLfloat luzDifusa[4]={1.0, 0.89, 0.71,1.0};	   	// "cor"
+	GLfloat luzEspecular[4]={1.0, 0.89, 0.71, 1.0};	// "brilho"
+	GLfloat posicaoLuz[4]={100, 50, 60, 1.0};
 
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={2.0,3.0,3.0,1.0};
-	GLint especMaterial = 90;
-
-	// Define a refletância do material
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-
-	// Ativa o uso da luz ambiente
+    // Ativa o uso da luz ambiente
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
 
 	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+	glLightfv(GL_LIGHT2, GL_AMBIENT, luzAmbiente);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+	glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz );
 
+    //ativar atenuação
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5f);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.5f);
 
 	// Altera a cor do desenho para rosa
 	glColor3f(0.55f, 0.45f, 0.34f);
@@ -78,31 +73,30 @@ void Desenha(void){
 
     /*==========OBJeTO TREE===========*/
 
-	GLfloat luzAmbienteTree[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusaTree[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
-	GLfloat luzEspecularTree[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
-	GLfloat posicaoLuzTree[4]={50.0, 25.0, 100.0, 1.0};
+
+	GLfloat luzAmbienteTree[4]={0.1,0.1,0.1,1.0};
+	GLfloat luzDifusaTree[4]={1.0,1.0,1.0,1.0}; // "cor" Luz Branca
+	GLfloat luzEspecularTree[4]={1.0, 1.0, 1.0, 1.0};// "brilho" Luz preta
+	GLfloat posicaoLuzTree[4]={0.0, 10.0, -30.0, 1.0};
 
 	// Capacidade de brilho do material
-	GLfloat especularidadeTree[4]={2.0,3.0,3.0,1.0};
+	GLfloat especularidadeTree[4]={1.0,1.0,1.0,1.0};
 	GLint especMaterialTree = 90;
 
 	// Define a refletância do material
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeTree);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterialTree);
 
 	// Ativa o uso da luz ambiente
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteTree);
 
 	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbienteTree);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusaTree);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularTree);
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzTree);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbienteTree);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, luzDifusaTree);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, luzEspecularTree);
+	glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuzTree); //posição da fonte de luz
 
 
-	glColor3f(0.60f, 0.80f, 0.19f);
+	glColor3f(0.33f, 0.42f, 0.19f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
@@ -110,7 +104,7 @@ void Desenha(void){
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
     glTranslated(-100, -94, -400);
-    glScalef(130, 200, 130);
+    glScalef(138, 200, 138);
 	DesenhaObjeto(objetoTree);
 
     glPopMatrix();
@@ -390,8 +384,12 @@ void Inicializa (void){
 	glEnable(GL_COLOR_MATERIAL);
 	//Habilita o uso de iluminação
 	glEnable(GL_LIGHTING);
-	// Habilita a luz de número 0
+	// Habilita a luz de número 0, 1, 2
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+	glEnable(GL_LIGHT3);
+
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
 
