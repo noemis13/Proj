@@ -9,7 +9,7 @@ GLfloat angle, fAspect;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
-float transPlane = 50;
+float transPlane = 50, rotaPlane = 0;
 
 
 // Apontador para objeto
@@ -235,6 +235,7 @@ void Desenha(void){
     glTranslated(transPlane, 10, -50);
     glRotatef(600, 0, 1, 0);
     glRotatef(-30, 0, 0, 1);
+    glRotatef(rotaPlane, 1, 0, 0);
 
     DesenhaObjeto(objetoAirplane);
 
@@ -318,10 +319,14 @@ void TeclasEspeciais (int tecla, int x, int y){
 							break;
 		case GLUT_KEY_END:	if(angle<=150) angle +=5;
 							break;
-        case GLUT_KEY_RIGHT: transPlane -= 1;
-							 break;
-        case GLUT_KEY_LEFT: transPlane += 1;
+        case GLUT_KEY_LEFT: if(transPlane>=-150) transPlane -= 1;
+                            else transPlane = 50;
                             break;
+        case GLUT_KEY_UP: rotaPlane -= 1;
+                          break;
+        case GLUT_KEY_DOWN: rotaPlane += 1;
+                          break;
+
 	}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
