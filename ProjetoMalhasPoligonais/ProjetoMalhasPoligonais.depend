@@ -122,3 +122,21 @@
 	<stdlib.h>
 	<GL/freeglut.h>
 
+1466791558 source:/home/nelsonjr/Documentos/GitHub/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
+	"bibutil.h"
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+
+1466616474 /home/nelsonjr/Documentos/GitHub/Proj/ProjetoMalhasPoligonais/bibutil.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<jpeglib.h>
+
+1466616474 source:/home/nelsonjr/Documentos/GitHub/Proj/ProjetoMalhasPoligonais/bibutil.cpp
+	<math.h>
+	<string.h>
+	<vector>
+	"bibutil.h"
+

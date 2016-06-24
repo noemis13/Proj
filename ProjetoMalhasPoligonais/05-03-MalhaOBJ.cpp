@@ -9,6 +9,7 @@ GLfloat angle, fAspect;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
+float transPlane = 50;
 
 
 // Apontador para objeto
@@ -231,7 +232,7 @@ void Desenha(void){
 	glRotatef(rotY,0,1,0);
 
     glScalef(10, 10, 10);
-    glTranslated(50, 10, -50);
+    glTranslated(transPlane, 10, -50);
     glRotatef(600, 0, 1, 0);
     glRotatef(-30, 0, 0, 1);
 
@@ -317,6 +318,10 @@ void TeclasEspeciais (int tecla, int x, int y){
 							break;
 		case GLUT_KEY_END:	if(angle<=150) angle +=5;
 							break;
+        case GLUT_KEY_RIGHT: transPlane -= 1;
+							 break;
+        case GLUT_KEY_LEFT: transPlane += 1;
+                            break;
 	}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
@@ -481,7 +486,7 @@ int main(int argc, char *argv[]){
 	glutInitWindowPosition(50,50);
 
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(450,450);
+	glutInitWindowSize(800,600);
 
 	// Cria a janela passando como argumento o título da mesma
 	glutCreateWindow("Parque");
