@@ -494,10 +494,10 @@ int main(int argc, char *argv[]){
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	// Especifica a posição inicial da janela GLUT
-	glutInitWindowPosition(50,50);
+	glutInitWindowPosition(190,50);
 
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(800,600);
+	glutInitWindowSize(910,650);
 
 	// Cria a janela passando como argumento o título da mesma
 	glutCreateWindow("Parque");
