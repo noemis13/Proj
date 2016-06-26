@@ -116,11 +116,11 @@
 	<GL/glut.h>
 	<jpeglib.h>
 
-<<<<<<< HEAD
-1466875099 source:/home/noemi/Área de Trabalho/Documentos.backup-2016-06-18/Periodo 5/Github/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
-=======
+1466446241 D
+
 1466790326 source:/home/noemi/Área de Trabalho/Documentos.backup-2016-06-18/Periodo 5/Github/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
->>>>>>> textura
+
+1466790326 tura
 	"bibutil.h"
 	<stdio.h>
 	<stdlib.h>
@@ -139,6 +139,24 @@
 	<jpeglib.h>
 
 1466616474 source:/home/nelsonjr/Documentos/GitHub/Proj/ProjetoMalhasPoligonais/bibutil.cpp
+	<math.h>
+	<string.h>
+	<vector>
+	"bibutil.h"
+
+1466923714 source:/home/clodoaldo/UTFPR2016/CompGraf/projeto/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
+	"bibutil.h"
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+
+1466813747 /home/clodoaldo/UTFPR2016/CompGraf/projeto/Proj/ProjetoMalhasPoligonais/bibutil.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<jpeglib.h>
+
+1466813747 source:/home/clodoaldo/UTFPR2016/CompGraf/projeto/Proj/ProjetoMalhasPoligonais/bibutil.cpp
 	<math.h>
 	<string.h>
 	<vector>

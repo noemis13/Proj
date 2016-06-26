@@ -10,7 +10,10 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 float transPlane = 50, rotaPlane = 0;
-
+//nevoa
+static GLint fogMode;
+//valor densidade da nevoa
+float densidadeNevoa = 0.0009;
 
 // Apontador para objeto
 OBJ *objetoWall;
@@ -300,6 +303,14 @@ void Teclas (unsigned char tecla, int x, int y){
 		else
             glEnable(GL_LIGHTING);
 	}
+	if(tecla=='n'){
+        densidadeNevoa+=0.00001;
+        printf("Densidade: %f \n",densidadeNevoa);
+	}
+	if(tecla=='b'){
+        densidadeNevoa-=0.00001;
+        printf("Densidade: %f \n",densidadeNevoa);
+	}
 	glutPostRedisplay();
 }
 
@@ -426,6 +437,35 @@ void Inicializa (void){
 
 	glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 13);
+
+    //Inicializa a nevoa
+       GLfloat position[] = { 0.5, 0.5, 3.0, 0.0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+   {
+      GLfloat mat[3] = {0.1745, 0.01175, 0.01175};
+      glMaterialfv (GL_FRONT, GL_AMBIENT, mat);
+      mat[0] = 0.61424; mat[1] = 0.04136; mat[2] = 0.04136;
+      glMaterialfv (GL_FRONT, GL_DIFFUSE, mat);
+      mat[0] = 0.727811; mat[1] = 0.626959; mat[2] = 0.626959;
+      glMaterialfv (GL_FRONT, GL_SPECULAR, mat);
+      glMaterialf (GL_FRONT, GL_SHININESS, 0.6*128.0);
+   }
+
+   glEnable(GL_FOG);
+   {
+    GLfloat fogColor[4] = {0.5, 0.5, 0.5, 1.0};
+
+      fogMode = GL_EXP;
+      glFogi (GL_FOG_MODE, fogMode);
+      glFogfv (GL_FOG_COLOR, fogColor);
+      glFogf (GL_FOG_DENSITY, densidadeNevoa);
+      glHint (GL_FOG_HINT, GL_DONT_CARE);
+      glFogf (GL_FOG_START, 1.0);
+      glFogf (GL_FOG_END, 5.0);
+   }
+   glClearColor(0.52, 0.51, 0.5, 1.0);  /* fog color */
 
 	// Carrega o objeto 3D
 	objetoWall = CarregaObjeto("wall.obj",true);
