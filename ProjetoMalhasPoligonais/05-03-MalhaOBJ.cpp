@@ -13,18 +13,15 @@ GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 float transPlane = 50, rotaPlane = 0;
 
-//<<<<<<< HEAD
 //nevoa
 static GLint fogMode;
 //valor densidade da nevoa
 float densidadeNevoa = 0.0009;
-//=======
 
 static int angulox = 0, anguloy = 0;
 int posicaoluz = 0;
 int orientacao = 1;
 GLubyte * earthTex;
-//>>>>>>> sombra
 
 // Apontador para objeto
 OBJ *objetoWall;
