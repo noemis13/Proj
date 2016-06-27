@@ -31,6 +31,7 @@ OBJ *objetoWall;
 OBJ *objetoTree;
 OBJ *objetoFountain;
 OBJ *objetoAirplane;
+OBJ *objetoF;
 
 //Textura
 GLuint texture_id[1];
@@ -66,7 +67,7 @@ void Desenha(void){
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
     glTranslatef(0, -21, 0);
-
+    glScalef(1.0f, 1.0f, 1.0f);
 	DesenhaObjeto(objetoWall);
     glPopMatrix();
 
@@ -76,7 +77,7 @@ void Desenha(void){
 	GLfloat luzAmbienteTree[4]={0.1, 0.1, 0.1,1.0};
 	GLfloat luzDifusaTree[4]={0.8, 0.8, 0.8,1.0};	   	// "cor"
 	GLfloat luzEspecularTree[4]={0.1, 0.1, 0.1, 0.0};	// "brilho"
-	GLfloat posicaoLuzTree[4]={0.0, -158, 7.5, 1.0};
+	GLfloat posicaoLuzTree[4]={0, -159, 251, 2.0};
 
     // Capacidade de brilho do material
 	GLfloat especularidadeTree[4]={2.0, 2.0, 2.0, 1.0};
@@ -97,16 +98,16 @@ void Desenha(void){
 	glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuzTree);
 
 
-
-	glColor3f(0.20f, 0.80f, 0.20f);
+	glColor3f(0.99f, 0.84f, 0.0f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
 
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-    glTranslated(0, -155, -100);
-    glScalef(15.0, 15.0, 15.0);
+    glTranslated(300, -158, 300);
+    glRotatef(20,0,1,0);
+
     DesenhaObjeto(objetoTree);
 
     glPopMatrix();
@@ -117,7 +118,7 @@ void Desenha(void){
 	GLfloat luzAmbienteFountain[4]={0.1,0.1,0.1,1.0};
 	GLfloat luzDifusaFountain[4]={1, 0.89, 0.77,1.0};	//meio alaranjado claro
 	GLfloat luzEspecularFountain[4]={0.0, 0.0, 0.0,1.0};	// "brilho"
-	GLfloat posicaoLuzFountain[4]={0, -159, 251, 2.0};
+	GLfloat posicaoLuzFountain[4]={0, -156, 251, 2.0};
 
 
 	// Ativa o uso da luz ambiente
@@ -139,35 +140,44 @@ void Desenha(void){
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
     glTranslated(-5, -149, 150);
-    glScalef(2.0f, 2.0f, 2.0f);
+    glScalef(2.8f, 2.8f, 2.0f);
 	DesenhaObjeto(objetoFountain);
 
     glPopMatrix();
 
 	/*==========OBJeTO GRASS===========*/
 
-    GLfloat luzEspecularGrass[4]={1.0, 1.0, 1.0, 1.0};
-    GLfloat posicaoLuzGrass[4]={0, 10, 100, 1.0};
+    GLfloat luzAmbienteGrass[4]={0.1,0.1,0.1,1.0};
+	GLfloat luzDifusaGrass[4]={1, 0.89, 0.77,1.0};	//meio alaranjado claro
+	GLfloat luzEspecularGrass[4]={1, 1, 1,1.0};	// "brilho"
+	GLfloat posicaoLuzGrass[4]={50, -20, 230, 1.0};
 
 	glColor3f(0.0f, 0.39f, 0.0f);
 
 	glPushMatrix();
-        glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuzGrass);
-	glPopMatrix();
+        // Ativa o uso da luz ambiente
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGrass);
 
-	glPushMatrix();
+        // Define os parâmetros da luz
+        glLightfv(GL_LIGHT3, GL_POSITION, posicaoLuzGrass);
+        glLightfv(GL_LIGHT2, GL_AMBIENT, luzAmbienteGrass);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, luzDifusaGrass);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, luzEspecularGrass);
 
-    glRotatef(rotX,1,0,0);
-	glRotatef(rotY,0,1,0);
-    glTranslatef(0, -150, 0);
-    glScalef(100, 0, -50);
-    glColor3f(0, 0.39f, 0);
 
-	//textura
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture( GL_TEXTURE_2D, texture_id[0]);
-	glutSolidCube(100);
-	glDisable ( GL_TEXTURE_2D );
+        glRotatef(rotX,1,0,0);
+        glRotatef(rotY,0,1,0);
+
+        glTranslatef(0, -150, 0);
+        glScalef(100, 0, -50);
+
+        glColor3f(0, 0.39f, 0);
+
+        //textura
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture( GL_TEXTURE_2D, texture_id[0]);
+        glutSolidCube(100);
+        glDisable ( GL_TEXTURE_2D );
 
     glPopMatrix();
 
@@ -220,6 +230,47 @@ void Desenha(void){
 
     glPopMatrix();
 
+    /*==========OBJeTO FLOWER===========*/
+
+	GLfloat luzAmbienteF[4]={0.1, 0.1, 0.1,1.0};
+	GLfloat luzDifusaF[4]={0.8, 0.8, 0.8,1.0};	   	// "cor"
+	GLfloat luzEspecularF[4]={0.0, 0.0, 0.0, 0.0};	// "brilho"
+	GLfloat posicaoLuzF[4]={0, -159, 251, 1.0};
+
+    // Capacidade de brilho do material
+	GLfloat especularidadeF[4]={1.0, 1.0, 1.0, 1.0};
+	GLint especMaterialF =  75;
+
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidadeF);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterialF);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteF);
+
+	// Define os parâmetros da luz
+	glLightfv(GL_LIGHT2, GL_AMBIENT, luzAmbienteF); //Ka
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusaF); //Kd
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecularF); //Ks
+	glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuzF);
+
+
+	glColor3f(0.80f, 0.36f, 0.36f);
+
+	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	glPushMatrix();
+
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+    glTranslated(-250, -158, 200);
+
+    glScalef(0.9f, 0.9f, 0.6f);
+    DesenhaObjeto(objetoF);
+
+    glPopMatrix();
+
+
     /*==================================*/
 
     // Executa os comandos OpenGL
@@ -231,6 +282,8 @@ void Desenha(void){
 int carregaBMP(char *nomeDoArquivo){
 
     #define SAIR {fclose(fp_arquivo); return -1;}
+    #define CTOI(C) (*(int*)&C)
+
     GLubyte *image;
     GLubyte Header[0x54];
     GLuint DataPos, imageSize;
@@ -244,16 +297,16 @@ int carregaBMP(char *nomeDoArquivo){
         SAIR;
     if(Header[0]!='B' || Header[1]!='M')
         SAIR;
-//    if(CTOI(Header[0x1E])!=0)
-//        SAIR;
- //   if(CTOI(Header[0x1C])!=24)
-  //      SAIR;
+    if(CTOI(Header[0x1E])!=0)
+        SAIR;
+    if(CTOI(Header[0x1C])!=24)
+        SAIR;
 
-    // Recupera a informação dos atributos de
-    // altura e largura da imagem
-//    Width = CTOI(Header[0x12]);
- //   Height = CTOI(Header[0x16]);
-  //  (CTOI(Header[0x0A]) == 0) ? (DataPos=0x36) : (DataPos = CTOI(Header[0x0A]));
+//     Recupera a informação dos atributos de
+//     altura e largura da imagem
+    Width = CTOI(Header[0x12]);
+    Height = CTOI(Header[0x16]);
+    (CTOI(Header[0x0A]) == 0) ? (DataPos=0x36) : (DataPos = CTOI(Header[0x0A]));
     imageSize=Width*Height*3;
 
     //Carga da Imagem
@@ -342,6 +395,7 @@ void Teclas (unsigned char tecla, int x, int y){
 		LiberaObjeto(objetoTree);
 		LiberaObjeto(objetoFountain);
 		LiberaObjeto(objetoAirplane);
+		LiberaObjeto(objetoF);
 		exit(0);
 	}
 	if(tecla=='n'){
@@ -496,9 +550,10 @@ void Inicializa (void){
 
 	// Carrega o objeto 3D
 	objetoWall = CarregaObjeto("wall.obj",true);
-    objetoTree = CarregaObjeto("Pine_Tree.obj",true);
+    objetoTree = CarregaObjeto("flower.obj",true);
     objetoFountain = CarregaObjeto("fountain.obj",true);
     objetoAirplane = CarregaObjeto("airplane.obj", true);
+    objetoF = CarregaObjeto("flower.obj", true);
 
     printf("Objeto carregado!");
 
@@ -541,6 +596,17 @@ void Inicializa (void){
 	}
 
 	CalculaNormaisPorFace(objetoAirplane);
+
+	//==============FLOWER===============
+
+	if(objetoF->normais){
+		// Se já existirem normais no arquivo, apaga elas
+		free(objetoF->normais);
+		objetoF->normais_por_vertice = false;
+	}
+
+	CalculaNormaisPorFace(objetoF);
+
 
 }
 
