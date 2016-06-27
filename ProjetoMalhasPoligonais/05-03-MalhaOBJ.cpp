@@ -1,7 +1,8 @@
 #include "bibutil.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/freeglut.h>
+#include <GL/glut.h>
+#include <GL/gl.h>
 
 //#define DEBUG 1
 // Variáveis para controles de navegação
@@ -10,10 +11,18 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 float transPlane = 50, rotaPlane = 0;
+<<<<<<< HEAD
 //nevoa
 static GLint fogMode;
 //valor densidade da nevoa
 float densidadeNevoa = 0.0009;
+=======
+
+static int angulox = 0, anguloy = 0;
+int posicaoluz = 0;
+int orientacao = 1;
+GLubyte * earthTex;
+>>>>>>> sombra
 
 // Apontador para objeto
 OBJ *objetoWall;
@@ -21,18 +30,6 @@ OBJ *objetoTree;
 OBJ *objetoFountain;
 OBJ *objetoAirplane;
 
-/*//Função para abrir a imagem da grama
-imagem *LoadBMP(char *nomeImagem){
-    FILE *arquivo = NULL;
-
-    arquivo = fopen(nomeImagem, "r");
-
-    if(arquivo){
-        fclose(arquivo);
-        return (arquivo);
-    }
-}
-*/
 
 // Função callback de redesenho da janela de visualização
 void Desenha(void){
@@ -179,7 +176,8 @@ void Desenha(void){
     glScalef(100, 0, -50);
     glColor3f(0, 0.39f, 0);
 
-	//glTexCoord2f(1.0, 1.0);
+    glBindTexture(GL_TEXTURE_1D, texName);
+
 	glutSolidCube(100);
 
     glPopMatrix();
@@ -241,9 +239,6 @@ void Desenha(void){
 	glFlush();
 }
 
-
-void DesenhaFonte(){
-}
 // Função usada para especificar a posição do observador virtual
 void PosicionaObservador(void){
     glMatrixMode(GL_MODELVIEW);
@@ -386,13 +381,60 @@ void GerenciaMovim(int x, int y){
 	glutPostRedisplay();
 }
 
-
+void makeStripeImage(void){
+    int j;
+    for (j = 0; j < stripeImageWidth; j++){
+        stripeImage[4*j] = (GLubyte) ((j<=4) ? 255 : 0);
+        stripeImage[4*j+1] = (GLubyte) ((j>4) ? 255 : 0);
+        stripeImage[4*j+2] = (GLubyte) 0;
+        stripeImage[4*j+3] = (GLubyte) 255;
+    }
+}
 
 // Função responsável por inicializar parâmetros e variáveis
 void Inicializa (void){
 
 	// Define a cor de fundo da janela de visualização como branca
 	glClearColor(0.53f, 0.81f, 0.93f, 1.0f);
+
+	///TEXTURA==========
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+    makeStripeImage();
+
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &texName);
+    glGenTextures(GL_TEXTURE_1D, texName);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+
+    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, stripeImageWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, stripeImage);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    currentCoeff = xequalzero;
+    currentGenMode = GL_OBJECT_LINEAR;
+    currentPlane = GL_OBJECT_PLANE;
+
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, currentGenMode);
+    glTexGenfv(GL_S, currentPlane, currentCoeff);
+
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_1D);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_AUTO_NORMAL);
+    glEnable(GL_NORMALIZE);
+
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+
+    glMaterialf (GL_FRONT, GL_SHININESS, 64.0);
+///==================
+
+
 
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
