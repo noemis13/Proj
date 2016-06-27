@@ -411,7 +411,7 @@ void TeclasEspeciais (int tecla, int x, int y){
 	switch (tecla){
 		case GLUT_KEY_HOME:	if(angle>=10)  angle -=5;
 							break;
-		case GLUT_KEY_END:	if(angle<=150) angle +=5;
+		case GLUT_KEY_END:	if(angle<=100) angle +=5;
 							break;
         case GLUT_KEY_LEFT: if(transPlane>=-150) transPlane -= 1;
                             else transPlane = 50;
@@ -447,32 +447,18 @@ void GerenciaMouse(int button, int state, int x, int y){
 #define SENS_ROT	5.0
 #define SENS_OBS	15.0
 #define SENS_TRANSL	20.0
+
 void GerenciaMovim(int x, int y){
 	// Botão esquerdo
 	if(bot==GLUT_LEFT_BUTTON){
 		// Calcula diferenças
 		int deltax = x_ini - x;
-		int deltay = y_ini - y;
+
 		// E modifica ângulos
-		rotY = rotY_ini - deltax/SENS_ROT;
-		rotX = rotX_ini - deltay/SENS_ROT;
+        rotY = rotY_ini - deltax/SENS_ROT;
+		//rotX = rotX_ini - deltay/SENS_ROT;
 	}
-	// Botão direito (zoom-in e zoom-out)
-	else if(bot==GLUT_RIGHT_BUTTON){
-		// Calcula diferença
-		int deltaz = y_ini - y;
-		// E modifica distância do observador
-		obsZ = obsZ_ini + deltaz/SENS_OBS;
-	}
-	// Botão do meio
-	else if(bot==GLUT_MIDDLE_BUTTON){
-		// Calcula diferenças
-		int deltax = x_ini - x;
-		int deltay = y_ini - y;
-		// E modifica posições
-		obsX = obsX_ini + deltax/SENS_TRANSL;
-		obsY = obsY_ini - deltay/SENS_TRANSL;
-	}
+
 	PosicionaObservador();
 	glutPostRedisplay();
 }
