@@ -168,3 +168,23 @@
 	<vector>
 	"bibutil.h"
 
+1467064188 source:/home/clodoaldo/projetoComputacao/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
+	"bibutil.h"
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1467062931 /home/clodoaldo/projetoComputacao/Proj/ProjetoMalhasPoligonais/bibutil.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<jpeglib.h>
+
+1467062931 source:/home/clodoaldo/projetoComputacao/Proj/ProjetoMalhasPoligonais/bibutil.cpp
+	<math.h>
+	<string.h>
+	<vector>
+	"bibutil.h"
+
