@@ -118,12 +118,13 @@
 
 1466446241 D
 
-1466975427 source:/home/noemi/Área de Trabalho/Documentos.backup-2016-06-18/Periodo 5/Github/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
+1466995271 source:/home/noemi/Área de Trabalho/Documentos.backup-2016-06-18/Periodo 5/Github/Proj/ProjetoMalhasPoligonais/05-03-MalhaOBJ.cpp
 	"bibutil.h"
 	<stdio.h>
 	<stdlib.h>
 	<GL/glut.h>
 	<GL/gl.h>
+	<GL/glu.h>
 
 1466790326 tura
 	"bibutil.h"

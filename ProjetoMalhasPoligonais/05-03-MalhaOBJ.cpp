@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
+#include <GL/glu.h>
 
 //#define DEBUG 1
 // Variáveis para controles de navegação
@@ -11,18 +12,19 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 float transPlane = 50, rotaPlane = 0;
-<<<<<<< HEAD
+
+//<<<<<<< HEAD
 //nevoa
 static GLint fogMode;
 //valor densidade da nevoa
 float densidadeNevoa = 0.0009;
-=======
+//=======
 
 static int angulox = 0, anguloy = 0;
 int posicaoluz = 0;
 int orientacao = 1;
 GLubyte * earthTex;
->>>>>>> sombra
+//>>>>>>> sombra
 
 // Apontador para objeto
 OBJ *objetoWall;
@@ -30,8 +32,9 @@ OBJ *objetoTree;
 OBJ *objetoFountain;
 OBJ *objetoAirplane;
 
+//Textura
+GLuint texture_id[1];
 
-// Função callback de redesenho da janela de visualização
 void Desenha(void){
     // Limpa a janela de visualização com a cor
 	// de fundo definida previamente
@@ -111,7 +114,6 @@ void Desenha(void){
 
     /*==========OBJeTO FOUNTAIN===========*/
 
-
 	GLfloat luzAmbienteFountain[4]={0.1,0.1,0.1,1.0};
 	GLfloat luzDifusaFountain[4]={1, 0.89, 0.77,1.0};	//meio alaranjado claro
 	GLfloat luzEspecularFountain[4]={0.0, 0.0, 0.0,1.0};	// "brilho"
@@ -134,7 +136,6 @@ void Desenha(void){
 	glPushMatrix();
 
 
-
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
     glTranslated(-5, -149, 150);
@@ -144,31 +145,17 @@ void Desenha(void){
     glPopMatrix();
 
 	/*==========OBJeTO GRASS===========*/
-/*	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
-	GLfloat luzDifusa[4]={0.8, 0.5, 0.8,1.0};	   	// "cor"
-	GLfloat luzEspecular[4]={8.0, 5.0, 8.0, 1.0};	// "brilho"
-	GLfloat posicaoLuz[4]={50.0, 25.0, 100.0, 1.0};
 
-	// Ativa o uso da luz ambiente
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+    GLfloat luzEspecularGrass[4]={1.0, 1.0, 1.0, 1.0};
+    GLfloat posicaoLuzGrass[4]={0, 10, 100, 1.0};
 
-	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+	glColor3f(0.0f, 0.39f, 0.0f);
 
-
-  */  // Altera a cor do desenho para rosa
-	//glColor3f(0.55f, 0.45f, 0.34f);
-
-	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
+        glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuzGrass);
+	glPopMatrix();
 
-    //ativar atenuação
-    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5f);
-    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5f);
-    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.5f);
+	glPushMatrix();
 
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
@@ -176,9 +163,11 @@ void Desenha(void){
     glScalef(100, 0, -50);
     glColor3f(0, 0.39f, 0);
 
-    glBindTexture(GL_TEXTURE_1D, texName);
-
+	//textura
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture( GL_TEXTURE_2D, texture_id[0]);
 	glutSolidCube(100);
+	glDisable ( GL_TEXTURE_2D );
 
     glPopMatrix();
 
@@ -239,6 +228,69 @@ void Desenha(void){
 	glFlush();
 }
 
+int carregaBMP(char *nomeDoArquivo){
+
+    #define SAIR {fclose(fp_arquivo); return -1;}
+    GLubyte *image;
+    GLubyte Header[0x54];
+    GLuint DataPos, imageSize;
+    GLsizei Width,Height;
+
+    // Abre o arquivo e efetua a leitura do Header do arquivo BMP
+    FILE * fp_arquivo = fopen(nomeDoArquivo,"rb");
+    if(!fp_arquivo)
+        return -1;
+    if(fread(Header,1,0x36,fp_arquivo)!=0x36)
+        SAIR;
+    if(Header[0]!='B' || Header[1]!='M')
+        SAIR;
+//    if(CTOI(Header[0x1E])!=0)
+//        SAIR;
+ //   if(CTOI(Header[0x1C])!=24)
+  //      SAIR;
+
+    // Recupera a informação dos atributos de
+    // altura e largura da imagem
+//    Width = CTOI(Header[0x12]);
+ //   Height = CTOI(Header[0x16]);
+  //  (CTOI(Header[0x0A]) == 0) ? (DataPos=0x36) : (DataPos = CTOI(Header[0x0A]));
+    imageSize=Width*Height*3;
+
+    //Carga da Imagem
+    image = (GLubyte *) malloc(imageSize);
+    int retorno;
+    retorno = fread(image,1,imageSize,fp_arquivo);
+    if (retorno !=imageSize){
+        free (image);
+        SAIR;
+    }
+
+    // Inverte os valores de R e B
+    int t, i;
+    for ( i = 0; i < imageSize; i += 3 ){
+        t = image[i];
+        image[i] = image[i+2];
+        image[i+2] = t;
+    }
+
+    // Tratamento da textura para o OpenGL
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+    glTexEnvf ( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+    // Faz a geraçao da textura na memória
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    fclose (fp_arquivo);
+    free (image);
+
+return 1;
+
+}
+
+
 // Função usada para especificar a posição do observador virtual
 void PosicionaObservador(void){
     glMatrixMode(GL_MODELVIEW);
@@ -292,12 +344,6 @@ void Teclas (unsigned char tecla, int x, int y){
 		LiberaObjeto(objetoAirplane);
 		exit(0);
 	}
-	if(tecla=='m'){
-		if(glIsEnabled(GL_LIGHTING))
-			glDisable(GL_LIGHTING);
-		else
-            glEnable(GL_LIGHTING);
-	}
 	if(tecla=='n'){
         densidadeNevoa+=0.00001;
         printf("Densidade: %f \n",densidadeNevoa);
@@ -311,8 +357,7 @@ void Teclas (unsigned char tecla, int x, int y){
 
 // Função callback para tratar eventos de teclas especiais
 void TeclasEspeciais (int tecla, int x, int y){
-	switch (tecla)
-	{
+	switch (tecla){
 		case GLUT_KEY_HOME:	if(angle>=10)  angle -=5;
 							break;
 		case GLUT_KEY_END:	if(angle<=150) angle +=5;
@@ -381,60 +426,12 @@ void GerenciaMovim(int x, int y){
 	glutPostRedisplay();
 }
 
-void makeStripeImage(void){
-    int j;
-    for (j = 0; j < stripeImageWidth; j++){
-        stripeImage[4*j] = (GLubyte) ((j<=4) ? 255 : 0);
-        stripeImage[4*j+1] = (GLubyte) ((j>4) ? 255 : 0);
-        stripeImage[4*j+2] = (GLubyte) 0;
-        stripeImage[4*j+3] = (GLubyte) 255;
-    }
-}
 
 // Função responsável por inicializar parâmetros e variáveis
 void Inicializa (void){
 
 	// Define a cor de fundo da janela de visualização como branca
 	glClearColor(0.53f, 0.81f, 0.93f, 1.0f);
-
-	///TEXTURA==========
-    glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
-    makeStripeImage();
-
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glGenTextures(1, &texName);
-    glGenTextures(GL_TEXTURE_1D, texName);
-    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-
-    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, stripeImageWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, stripeImage);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    currentCoeff = xequalzero;
-    currentGenMode = GL_OBJECT_LINEAR;
-    currentPlane = GL_OBJECT_PLANE;
-
-    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, currentGenMode);
-    glTexGenfv(GL_S, currentPlane, currentCoeff);
-
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_1D);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_AUTO_NORMAL);
-    glEnable(GL_NORMALIZE);
-
-    glFrontFace(GL_CW);
-    glCullFace(GL_BACK);
-
-    glMaterialf (GL_FRONT, GL_SHININESS, 64.0);
-///==================
-
-
 
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
@@ -461,30 +458,18 @@ void Inicializa (void){
 	obsX = obsY = 100;
 	obsZ = 350;
 
-	//textura para o chão
-	//textura da grama
-    GLuint idTextura;
-	glGenTextures(1, &idTextura);
-	glBindTexture(GL_TEXTURE_2D, idTextura);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
-    FILE *file = fopen("texto-grama-1.jpg", "r");
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 660, 400, 0, GL_RGB, GL_UNSIGNED_BYTE, file);
-
+	///textura para o chão
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 13);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id[0]);
+    carregaBMP("grama.bmp");
 
-    //Inicializa a nevoa
-       GLfloat position[] = { 0.5, 0.5, 3.0, 0.0 };
+    ///Inicializa a nevoa
+    GLfloat position[] = { 0.5, 0.5, 3.0, 0.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, position);
-   glEnable(GL_LIGHTING);
-   glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
    {
       GLfloat mat[3] = {0.1745, 0.01175, 0.01175};
       glMaterialfv (GL_FRONT, GL_AMBIENT, mat);
