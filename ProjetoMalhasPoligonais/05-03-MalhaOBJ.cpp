@@ -13,6 +13,7 @@ GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 float transPlane = 50, rotaPlane = 0;
 
+
 //nevoa
 static GLint fogMode;
 //controle da nevoa
